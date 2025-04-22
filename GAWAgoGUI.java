@@ -1,12 +1,12 @@
-
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 
 public class GAWAgoGUI extends JFrame {
-
     private Cart cart;
     private JTextArea cartArea;
-
     public GAWAgoGUI() {
         cart = new Cart();
         setTitle("GAWAgo");
@@ -46,14 +46,14 @@ public class GAWAgoGUI extends JFrame {
         }
         add(itemPanel, BorderLayout.CENTER);
 
-        //Cart display area
+//Cart display area
         cartArea = new JTextArea();
         cartArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(cartArea);
         scrollPane.setPreferredSize(new Dimension(250, 500));
         add(scrollPane, BorderLayout.EAST);
 
-        //Clear cart button
+//Clear cart button
         JButton clearButton = new JButton("🗑️ Clear Cart");
         clearButton.addActionListener(e -> {
             cart.clearCart();
@@ -61,11 +61,9 @@ public class GAWAgoGUI extends JFrame {
         });
         add(clearButton, BorderLayout.SOUTH);
     }
-
     private void updateCartDisplay() {
         cartArea.setText(cart.getCartDetails());
     }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GAWAgoGUI().setVisible(true));
     }
