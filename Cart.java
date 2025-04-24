@@ -1,14 +1,10 @@
-
 import java.util.*;
 
 public class Cart {
-
     private Map<String, CartItem> items;
-
     public Cart() {
         items = new HashMap<>();
     }
-
     public void addItem(Item item, int quantity) {
         String key = item.getName();
         if (items.containsKey(key)) {
@@ -17,17 +13,14 @@ public class Cart {
             items.put(key, new CartItem(item, quantity));
         }
     }
-
     public void clearCart() {
         items.clear();
     }
-
     public double getTotal() {
         return items.values().stream()
                 .mapToDouble(CartItem::getTotalPrice)
                 .sum();
     }
-
     public String getCartDetails() {
         StringBuilder sb = new StringBuilder();
         for (CartItem cartItem : items.values()) {

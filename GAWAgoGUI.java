@@ -1,19 +1,23 @@
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
+<<<<<<< HEAD
 import javax.swing.border.*;
+=======
+>>>>>>> 621a6ce7e5bc496678d6e0ad4f48451da1c67693
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 public class GAWAgoGUI extends JFrame {
-
     private Cart cart;
     private JTextArea cartArea;
+<<<<<<< HEAD
     private JPanel itemPanel;
     private JScrollPane scrollPane;
     private boolean isDarkMode = false;
 
+=======
+>>>>>>> 621a6ce7e5bc496678d6e0ad4f48451da1c67693
     public GAWAgoGUI() {
         cart = new Cart();
         setTitle("GAWAgo");
@@ -60,7 +64,11 @@ public class GAWAgoGUI extends JFrame {
         }
         add(itemPanel, BorderLayout.CENTER);
 
+<<<<<<< HEAD
         // Cart Area
+=======
+//Cart display area
+>>>>>>> 621a6ce7e5bc496678d6e0ad4f48451da1c67693
         cartArea = new JTextArea();
         cartArea.setEditable(false);
         cartArea.setFont(new Font("Monospaced", Font.PLAIN, 15));
@@ -70,8 +78,12 @@ public class GAWAgoGUI extends JFrame {
         scrollPane.setPreferredSize(new Dimension(300, 500));
         add(scrollPane, BorderLayout.EAST);
 
+<<<<<<< HEAD
         // Bottom panel with Clear Cart & Theme Toggle
         JPanel bottomPanel = new JPanel();
+=======
+//Clear cart button
+>>>>>>> 621a6ce7e5bc496678d6e0ad4f48451da1c67693
         JButton clearButton = new JButton("🗑️ Clear Cart");
         clearButton.setFont(new Font("Segoe UI", Font.BOLD, 15));
         clearButton.setBorder(new EmptyBorder(10, 15, 10, 15));
@@ -121,11 +133,9 @@ public class GAWAgoGUI extends JFrame {
         }
         getContentPane().setBackground(panelBg);
     }
-
     private void updateCartDisplay() {
         cartArea.setText(cart.getCartDetails());
     }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GAWAgoGUI().setVisible(true));
     }
