@@ -1,9 +1,7 @@
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.border.*;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
 
 public class GAWAgoGUI extends JFrame {
     private Cart cart;
@@ -19,6 +17,7 @@ public class GAWAgoGUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
+// Items
         itemPanel = new JPanel(new GridLayout(2, 4, 20, 20));
         itemPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
@@ -34,14 +33,26 @@ public class GAWAgoGUI extends JFrame {
         };
         for (Item item : storeItems) {
             JPanel panel = new JPanel(new BorderLayout());
+            panel.setBorder(BorderFactory.createLineBorder(new Color(100, 100, 255), 2, true));  // Rounded border effect
+
             ImageIcon icon = new ImageIcon(item.getImagePath());
             Image scaledImage = icon.getImage().getScaledInstance(160, 160, Image.SCALE_SMOOTH);
-
             JButton itemButton = new JButton(new ImageIcon(scaledImage));
             itemButton.setPreferredSize(new Dimension(160, 160));
-            itemButton.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+            itemButton.setBorder(BorderFactory.createEmptyBorder());
             itemButton.setToolTipText("<html><b>" + item.getName() + "</b><br>₱" + item.getPrice() + "</html>");
+            itemButton.setContentAreaFilled(false);
 
+            itemButton.setRolloverEnabled(true);
+            itemButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    itemButton.setBorder(BorderFactory.createLineBorder(Color.CYAN, 3));
+                }
+
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    itemButton.setBorder(BorderFactory.createEmptyBorder());
+                }
+            });
             JSpinner quantitySpinner = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
             quantitySpinner.setFont(new Font("SansSerif", Font.PLAIN, 14));
 
@@ -53,26 +64,32 @@ public class GAWAgoGUI extends JFrame {
                 cart.addItem(item, quantity);
                 updateCartDisplay();
             });
-
             itemPanel.add(panel);
         }
         add(itemPanel, BorderLayout.CENTER);
 
-        // Cart Area
+// Cart Area
         cartArea = new JTextArea();
         cartArea.setEditable(false);
         cartArea.setFont(new Font("Monospaced", Font.PLAIN, 15));
-        cartArea.setBorder(new TitledBorder("🛒 Your Cart"));
+        cartArea.setBorder(BorderFactory.createTitledBorder("🛒 Your Cart"));
 
         scrollPane = new JScrollPane(cartArea);
         scrollPane.setPreferredSize(new Dimension(300, 500));
         add(scrollPane, BorderLayout.EAST);
 
-        // Bottom panel at Clear Cart at Theme
+//Clear Cart at Theme
         JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
         JButton clearButton = new JButton("🗑️ Clear Cart");
         clearButton.setFont(new Font("Segoe UI", Font.BOLD, 15));
-        clearButton.setBorder(new EmptyBorder(10, 15, 10, 15));
+        clearButton.setBackground(new Color(255, 100, 100));
+        clearButton.setForeground(Color.WHITE);
+        clearButton.setBorder(BorderFactory.createLineBorder(Color.RED));
+        clearButton.setFocusPainted(false);
+        clearButton.setContentAreaFilled(true);
+
         clearButton.addActionListener(e -> {
             cart.clearCart();
             updateCartDisplay();
@@ -80,6 +97,9 @@ public class GAWAgoGUI extends JFrame {
         JToggleButton themeToggle = new JToggleButton("🌙 Dark Mode");
         themeToggle.setFont(new Font("Segoe UI", Font.BOLD, 15));
         themeToggle.setBorder(new EmptyBorder(10, 15, 10, 15));
+        themeToggle.setBackground(new Color(50, 50, 255));
+        themeToggle.setForeground(Color.WHITE);
+
         themeToggle.addItemListener(e -> {
             isDarkMode = e.getStateChange() == ItemEvent.SELECTED;
             themeToggle.setText(isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode");
@@ -91,6 +111,7 @@ public class GAWAgoGUI extends JFrame {
 
         applyTheme();
     }
+//Ito ay sa Light at Dark mode
     private void applyTheme() {
         Color bgColor = isDarkMode ? new Color(30, 30, 30) : Color.WHITE;
         Color fgColor = isDarkMode ? Color.WHITE : Color.BLACK;
@@ -100,8 +121,10 @@ public class GAWAgoGUI extends JFrame {
         itemPanel.setBackground(panelBg);
         cartArea.setBackground(bgColor);
         cartArea.setForeground(fgColor);
-        cartArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(fgColor, 1),
-                "🛒 Your Cart", TitledBorder.LEFT, TitledBorder.TOP, font, fgColor));
+        cartArea.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(fgColor, 1),
+                "🛒 Your Cart", TitledBorder.LEFT, TitledBorder.TOP, font, fgColor)
+        );
         scrollPane.setBackground(panelBg);
         scrollPane.getViewport().setBackground(bgColor);
 
@@ -121,7 +144,7 @@ public class GAWAgoGUI extends JFrame {
     private void updateCartDisplay() {
         cartArea.setText(cart.getCartDetails());
     }
-
+// Main Method para sa pag launch
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GAWAgoGUI().setVisible(true));
     }
